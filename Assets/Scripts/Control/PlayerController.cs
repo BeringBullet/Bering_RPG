@@ -18,43 +18,46 @@ namespace RPG.Contral
         // Update is called once per frame
         void Update()
         {
-            InteractWithCombat();
-            InteractWithMovement();
+            if (InteractWithCombat) return;
+            if (InteractWithMovement) return;
         }
 
-        private void InteractWithCombat()
+        private bool InteractWithCombat
         {
-            RaycastHit[] hits = Physics.RaycastAll(MouseRay);
-            foreach (RaycastHit hit in hits)
+            get
             {
-                CombatTarget target = hit.transform.GetComponent<CombatTarget>();
-                if (target == null) continue;
 
-                if (Input.GetMouseButtonDown(0))
+                RaycastHit[] hits = Physics.RaycastAll(MouseRay);
+                foreach (RaycastHit hit in hits)
                 {
-                    GetComponent<Fighter>().Attack(target);
+                    CombatTarget target = hit.transform.GetComponent<CombatTarget>();
+                    if (target == null) continue;
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        GetComponent<Fighter>().Attack(target);
+                    }
+                    return true;
                 }
+                return false;
             }
         }
 
-        private void InteractWithMovement()
+        private bool InteractWithMovement
         {
-            if (Input.GetMouseButton(0))
+            get
             {
-                MoveToCursor();
+                RaycastHit hitinfo;
+                if (Physics.Raycast(MouseRay, out hitinfo))
+                {
+                    if (Input.GetMouseButton(0))
+                    {
+                        mover.StartMoveAction(hitinfo.point);
+                    }
+                    return true;
+                }
+                return false;
             }
         }
-
-        private void MoveToCursor()
-        {
-            RaycastHit hitinfo;
-            bool hasHit = Physics.Raycast(MouseRay, out hitinfo);
-
-            if (hasHit)
-            {
-                mover.MoveTo(hitinfo.point);
-            }
-        }
-
     }
 }
