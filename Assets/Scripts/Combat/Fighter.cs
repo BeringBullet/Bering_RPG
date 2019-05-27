@@ -13,6 +13,8 @@ namespace RPG.Combat
         [Range(0f, 5f)]
         [SerializeField] float weaponRange = 2f;
         [SerializeField] float timeBetweenAttachs = 1f;
+        [SerializeField]
+        float weaponDamage = 20f;
 
         float timeSinceLastAttack = 0;
 
@@ -33,11 +35,11 @@ namespace RPG.Combat
         // Update is called once per frame
         void Update()
         {
-            timeSinceLastAttack += Time.deltaTime; 
+            timeSinceLastAttack += Time.deltaTime;
 
             if (target == null) return;
 
-            if (!IsInRange) 
+            if (!IsInRange)
             {
                 mover.MoveTo(target.position);
             }
@@ -52,8 +54,18 @@ namespace RPG.Combat
         {
             if (timeSinceLastAttack > timeBetweenAttachs)
             {
+                //This will trigtger the Hit() event.
                 animator.SetTrigger("attack");
                 timeSinceLastAttack = 0;
+            }
+        }
+
+        // Annimation Event
+        void Hit()
+        {
+            if (target != null)
+            {
+                target.GetComponent<Health>().TakeDamage(weaponDamage);
             }
         }
 
@@ -66,13 +78,6 @@ namespace RPG.Combat
         public void Cancel()
         {
             target = null;
-        }
-
-
-        // Annimation Event
-        void Hit()
-        {
-
         }
     }
 }
