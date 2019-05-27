@@ -16,6 +16,7 @@ MonoBehaviour:
   suspicionTime: 3
   patrolPath: {fileID: 0}
   waypointTolerance: 1.1
+  waypointDwellTime: 3
 --- !u!1001 &1869317696393458878
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -139,6 +140,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6976859744892981593, guid: 1c4968159f882804ab8f676e38bf6527,
+        type: 3}
+      propertyPath: maxHealthPoints
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3688969473518523313, guid: 1c4968159f882804ab8f676e38bf6527,
+        type: 3}
+      propertyPath: weaponDamage
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1817110351886193561, guid: 1c4968159f882804ab8f676e38bf6527,
         type: 3}
