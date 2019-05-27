@@ -1,5 +1,6 @@
 using System;
 using RPG.Combat;
+using RPG.Core;
 using RPG.Movement;
 using UnityEngine;
 
@@ -9,15 +10,19 @@ namespace RPG.Contral
     {
         private Ray MouseRay => Camera.main.ScreenPointToRay(Input.mousePosition);
         Mover mover;
-
+        Health health;
+        Fighter fighter;
         private void Start()
         {
             mover = GetComponent<Mover>();
+            health = GetComponent<Health>();
+            fighter = GetComponent<Fighter>();
         }
 
         // Update is called once per frame
         void Update()
         {
+            if (health.IsDead) return;
             if (InteractWithCombat) return;
             if (InteractWithMovement) return;
         }
@@ -26,16 +31,16 @@ namespace RPG.Contral
         {
             get
             {
-
                 RaycastHit[] hits = Physics.RaycastAll(MouseRay);
                 foreach (RaycastHit hit in hits)
                 {
-                    CombatTarget target = hit.transform.GetComponent<CombatTarget>();
-                    if (target == null) continue;
+                    CombatTarget combatTarget = hit.transform.GetComponent<CombatTarget>();
+                    if (combatTarget == null) continue;
+                    if (!fighter.CanAttack(combatTarget.gameObject)) continue;
 
-                    if (Input.GetMouseButtonDown(0))
+                    if (Input.GetMouseButton(0))
                     {
-                        GetComponent<Fighter>().Attack(target);
+                        fighter.Attack(combatTarget.gameObject);
                     }
                     return true;
                 }

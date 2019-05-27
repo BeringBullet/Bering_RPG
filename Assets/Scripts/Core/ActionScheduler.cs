@@ -8,6 +8,7 @@ namespace RPG.Core
     {
         IAction currentAction;
 
+        public void CancelCurrentAction() => StartAction(null);
         public void StartAction(IAction action)
         {
             if (currentAction == action) return;
@@ -18,5 +19,6 @@ namespace RPG.Core
             }
             currentAction = action;
         }
+
     }
 }
