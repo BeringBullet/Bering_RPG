@@ -8,21 +8,21 @@ namespace RPG.Combat
 {
     public class Fighter : MonoBehaviour, IAction
     {
-        Transform target;
 
         [Range(0f, 5f)]
         [SerializeField] float weaponRange = 2f;
         [SerializeField] float timeBetweenAttachs = 1f;
         [SerializeField]
-        float weaponDamage = 20f;
 
+        Health target;
+        float weaponDamage = 20f;
         float timeSinceLastAttack = 0;
 
         Mover mover;
         ActionScheduler actionScheduler;
         Animator animator;
 
-        private bool IsInRange => Vector3.Distance(transform.position, target.position) < weaponRange;
+        private bool IsInRange => Vector3.Distance(transform.position, target.transform.position) < weaponRange;
 
         // Start is called before the first frame update
         void Start()
@@ -38,10 +38,11 @@ namespace RPG.Combat
             timeSinceLastAttack += Time.deltaTime;
 
             if (target == null) return;
+            if (target.IsDead) return;
 
             if (!IsInRange)
             {
-                mover.MoveTo(target.position);
+                mover.MoveTo(target.transform.position);
             }
             else
             {
@@ -52,8 +53,10 @@ namespace RPG.Combat
 
         private void AttackBehaviour()
         {
+            transform.LookAt(target.transform);
             if (timeSinceLastAttack > timeBetweenAttachs)
             {
+                
                 //This will trigtger the Hit() event.
                 animator.SetTrigger("attack");
                 timeSinceLastAttack = 0;
@@ -65,18 +68,19 @@ namespace RPG.Combat
         {
             if (target != null)
             {
-                target.GetComponent<Health>().TakeDamage(weaponDamage);
+                target.TakeDamage(weaponDamage);
             }
         }
 
         public void Attack(CombatTarget combatTarget)
         {
             actionScheduler.StartAction(this);
-            target = combatTarget.transform;
+            target = combatTarget.GetComponent<Health>();
         }
 
         public void Cancel()
         {
+            animator.SetTrigger("stopAttack");
             target = null;
         }
     }
