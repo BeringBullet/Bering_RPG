@@ -57,7 +57,7 @@ namespace RPG.Contral
                 {
                     if (Input.GetMouseButton(0))
                     {
-                        mover.StartMoveAction(hitinfo.point);
+                        mover.StartMoveAction(hitinfo.point, 1f);
                     }
                     return true;
                 }

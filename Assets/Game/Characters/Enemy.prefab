@@ -144,12 +144,17 @@ PrefabInstance:
     - target: {fileID: 6976859744892981593, guid: 1c4968159f882804ab8f676e38bf6527,
         type: 3}
       propertyPath: maxHealthPoints
-      value: 40
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3688969473518523313, guid: 1c4968159f882804ab8f676e38bf6527,
         type: 3}
       propertyPath: weaponDamage
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3688969473518523313, guid: 1c4968159f882804ab8f676e38bf6527,
+        type: 3}
+      propertyPath: timeBetweenAttachs
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1817110351886193561, guid: 1c4968159f882804ab8f676e38bf6527,
         type: 3}
