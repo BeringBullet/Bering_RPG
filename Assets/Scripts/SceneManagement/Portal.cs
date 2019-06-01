@@ -41,7 +41,6 @@ namespace RPG.SceneManagement
             yield return fader.FadeOut(fadeOutTime);
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
 
-            yield return new WaitForSeconds(fadeWaitTime);
             Portal otherPortal = getOtherPortal();
             UpdatePlayer(otherPortal);
             yield return new WaitForSeconds(fadeWaitTime);
