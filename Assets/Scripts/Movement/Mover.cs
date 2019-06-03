@@ -42,6 +42,7 @@ namespace RPG.Movement
 
         public void Cancel()
         {
+            GetComponent<NavMeshAgent>().enabled = true;
             navMeshAgent.isStopped = true;
         }
 

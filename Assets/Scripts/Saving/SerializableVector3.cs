@@ -1,10 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RPG.Saving
 {
-    [Serializable]
-    class SerializableVector3
+    [System.Serializable]
+    public class SerializableVector3
     {
         float x, y, z;
 
@@ -15,7 +14,7 @@ namespace RPG.Saving
             z = vector.z;
         }
 
-        public Vector3 ToVector3()
+        public Vector3 ToVector()
         {
             return new Vector3(x, y, z);
         }

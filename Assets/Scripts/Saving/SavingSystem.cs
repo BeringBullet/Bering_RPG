@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
@@ -6,37 +7,65 @@ using UnityEngine;
 
 namespace RPG.Saving
 {
-    class SavingSystem : MonoBehaviour
+    public class SavingSystem : MonoBehaviour
     {
-        string path(string savefile) => (GetPathFromSaveFile(savefile));
-        public void Save(string savefile)
+
+        public void Save(string saveFile)
         {
-            using (FileStream stream = File.Open(path(savefile), FileMode.Create))
+            Dictionary<string, object> state = LoadFile(saveFile);
+            CaptureState(state);
+            SaveFile(saveFile, state);
+        }
+        public void Load(string saveFile)
+        {
+            RestoreState(LoadFile(saveFile));
+        }
+
+        private Dictionary<string, object> LoadFile(string saveFile)
+        {
+            string path = GetPathFromSaveFile(saveFile);
+            if (!File.Exists(path)) return new Dictionary<string, object>();
+
+            using (FileStream stream = File.Open(path, FileMode.Open))
             {
-                Transform playerTransform = GetPlayerTransform();
                 BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(stream, new SerializableVector3(playerTransform.position));
+                return (Dictionary<string, object>)formatter.Deserialize(stream);
             }
         }
 
-
-
-        public void Load(string savefile)
+        private void SaveFile(string saveFile, object state)
         {
-            using (FileStream stream = File.Open(path(savefile), FileMode.Open))
+            string path = GetPathFromSaveFile(saveFile);
+            using (FileStream stream = File.Open(path, FileMode.Create))
             {
-                Transform playerTransform = GetPlayerTransform();
                 BinaryFormatter formatter = new BinaryFormatter();
-                Vector3 position = ((SerializableVector3)formatter.Deserialize(stream)).ToVector3();
-                playerTransform.position = position;
+                formatter.Serialize(stream, state);
             }
         }
 
-        private Transform GetPlayerTransform()
+        private void CaptureState(Dictionary<string, object> state)
         {
-            return GameObject.FindWithTag("Player").transform;
+            foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
+            {
+                state[saveable.GetUniqueIdentifier()] = saveable.CaptureState();
+            }
         }
 
-        private string GetPathFromSaveFile(string savefile) => ($"{ Application.persistentDataPath }/{ savefile }.sav");
+        private void RestoreState(Dictionary<string, object> state)
+        {
+            foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
+            {
+                string id = saveable.GetUniqueIdentifier();
+                if (state.ContainsKey(id))
+                {
+                    saveable.RestoreState(state[id]);
+                }
+            }
+        }
+
+        private string GetPathFromSaveFile(string saveFile)
+        {
+            return Path.Combine(Application.persistentDataPath, saveFile + ".sav");
+        }
     }
 }
