@@ -87,6 +87,12 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 3f6fc0cf5e5d31c458bc74ede87cb8ae, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 679ff741e12a7e740819ede24a7000b7, type: 3}
+--- !u!4 &2958126883571506019 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 461188, guid: 679ff741e12a7e740819ede24a7000b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 2958126883571962599}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9121019894695920336
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -179,6 +185,23 @@ PrefabInstance:
       propertyPath: weaponDamage
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 3688969473518523313, guid: 1c4968159f882804ab8f676e38bf6527,
+        type: 3}
+      propertyPath: handTransform
+      value: 
+      objectReference: {fileID: 2958126883571506019}
+    - target: {fileID: 3688969473518523313, guid: 1c4968159f882804ab8f676e38bf6527,
+        type: 3}
+      propertyPath: weaponPrefab
+      value: 
+      objectReference: {fileID: 1615724870577345240, guid: 9f5472e2cc67ea24391383df08dbad12,
+        type: 3}
+    - target: {fileID: 3688969473518523313, guid: 1c4968159f882804ab8f676e38bf6527,
+        type: 3}
+      propertyPath: animatorOverrideController
+      value: 
+      objectReference: {fileID: 22100000, guid: f41bb73f663e211418fc191060e01dd8,
+        type: 2}
     - target: {fileID: 1817110351886193561, guid: 1c4968159f882804ab8f676e38bf6527,
         type: 3}
       propertyPath: m_Enabled

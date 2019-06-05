@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RPG.Movement;
 using RPG.Core;
+using System;
 
 namespace RPG.Combat
 {
@@ -12,6 +13,9 @@ namespace RPG.Combat
         [SerializeField] float weaponRange = 2f;
         [SerializeField] float timeBetweenAttachs = 1f;
         [SerializeField] float weaponDamage = 5f;
+        [SerializeField] GameObject weaponPrefab = null;
+        [SerializeField] Transform handTransform = null;
+        [SerializeField] AnimatorOverrideController animatorOverrideController = null; 
 
         Health target;
         float timeSinceLastAttack = Mathf.Infinity;
@@ -22,8 +26,13 @@ namespace RPG.Combat
 
         private bool IsInRange => Vector3.Distance(transform.position, target.transform.position) < weaponRange;
 
-        // Start is called before the first frame update
         void Start()
+        {
+            SpawnWeapon();
+        }
+
+
+        void Awake()
         {
             mover = GetComponent<Mover>();
             actionScheduler = GetComponent<ActionScheduler>();
@@ -47,6 +56,12 @@ namespace RPG.Combat
                 mover.Cancel();
                 AttackBehaviour();
             }
+        }
+        private void SpawnWeapon()
+        {
+            Instantiate(weaponPrefab, handTransform);
+            Animator animator = GetComponent<Animator>();
+            animator.runtimeAnimatorController = animatorOverrideController;
         }
 
         private void AttackBehaviour()
