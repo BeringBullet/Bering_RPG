@@ -164,6 +164,11 @@ PrefabInstance:
       propertyPath: maxHealthPoints
       value: 300
       objectReference: {fileID: 0}
+    - target: {fileID: 5690206211943536318, guid: 1c4968159f882804ab8f676e38bf6527,
+        type: 3}
+      propertyPath: uniqueIdentifier
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 3688969473518523313, guid: 1c4968159f882804ab8f676e38bf6527,
         type: 3}
       propertyPath: timeBetweenAttachs
