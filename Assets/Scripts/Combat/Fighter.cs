@@ -10,25 +10,24 @@ namespace RPG.Combat
     public class Fighter : MonoBehaviour, IAction
     {
 
-        [SerializeField] float weaponRange = 2f;
         [SerializeField] float timeBetweenAttachs = 1f;
-        [SerializeField] float weaponDamage = 5f;
-        [SerializeField] GameObject weaponPrefab = null;
-        [SerializeField] Transform handTransform = null;
-        [SerializeField] AnimatorOverrideController animatorOverrideController = null; 
+        [SerializeField] Transform rightHandTransform = null;
+        [SerializeField] Transform leftHandTransform = null;
+        [SerializeField] Weapon defaultWeapon = null;
+
 
         Health target;
         float timeSinceLastAttack = Mathf.Infinity;
-
+        Weapon currentWeapon = null;
         Mover mover;
         ActionScheduler actionScheduler;
         Animator animator;
 
-        private bool IsInRange => Vector3.Distance(transform.position, target.transform.position) < weaponRange;
+        private bool IsInRange => Vector3.Distance(transform.position, target.transform.position) < currentWeapon.WeaponRange;
 
         void Start()
         {
-            SpawnWeapon();
+            EquipWeapon(defaultWeapon);
         }
 
 
@@ -45,6 +44,7 @@ namespace RPG.Combat
             timeSinceLastAttack += Time.deltaTime;
 
             if (target == null) return;
+            if (target.tag == "Player") return;
             if (target.IsDead) return;
 
             if (!IsInRange)
@@ -57,11 +57,11 @@ namespace RPG.Combat
                 AttackBehaviour();
             }
         }
-        private void SpawnWeapon()
+        public void EquipWeapon(Weapon weapon)
         {
-            Instantiate(weaponPrefab, handTransform);
+            currentWeapon = weapon;
             Animator animator = GetComponent<Animator>();
-            animator.runtimeAnimatorController = animatorOverrideController;
+            currentWeapon.Spawn(rightHandTransform, leftHandTransform, animator);
         }
 
         private void AttackBehaviour()
@@ -85,7 +85,13 @@ namespace RPG.Combat
         void Hit()
         {
             if (target == null) return;
-            target.TakeDamage(weaponDamage);
+            target.TakeDamage(currentWeapon.WeaponDamage);
+        }
+
+        // Annimation Event
+        void shoot()
+        {
+           if (target == null) return;
         }
        
         public bool CanAttack(GameObject combatTarget)
