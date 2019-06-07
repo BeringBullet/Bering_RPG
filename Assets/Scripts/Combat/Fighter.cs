@@ -3,27 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using RPG.Movement;
 using RPG.Core;
+using System;
 
 namespace RPG.Combat
 {
     public class Fighter : MonoBehaviour, IAction
     {
 
-        [SerializeField] float weaponRange = 2f;
         [SerializeField] float timeBetweenAttachs = 1f;
-        [SerializeField] float weaponDamage = 5f;
+        [SerializeField] Transform rightHandTransform = null;
+        [SerializeField] Transform leftHandTransform = null;
+        [SerializeField] Weapon defaultWeapon = null;
+
 
         Health target;
         float timeSinceLastAttack = Mathf.Infinity;
-
+        Weapon currentWeapon = null;
         Mover mover;
         ActionScheduler actionScheduler;
         Animator animator;
 
-        private bool IsInRange => Vector3.Distance(transform.position, target.transform.position) < weaponRange;
+        private bool IsInRange => Vector3.Distance(transform.position, target.transform.position) < currentWeapon.WeaponRange;
 
-        // Start is called before the first frame update
         void Start()
+        {
+            EquipWeapon(defaultWeapon);
+        }
+
+
+        void Awake()
         {
             mover = GetComponent<Mover>();
             actionScheduler = GetComponent<ActionScheduler>();
@@ -36,6 +44,7 @@ namespace RPG.Combat
             timeSinceLastAttack += Time.deltaTime;
 
             if (target == null) return;
+            if (target.tag == "Player") return;
             if (target.IsDead) return;
 
             if (!IsInRange)
@@ -47,6 +56,12 @@ namespace RPG.Combat
                 mover.Cancel();
                 AttackBehaviour();
             }
+        }
+        public void EquipWeapon(Weapon weapon)
+        {
+            currentWeapon = weapon;
+            Animator animator = GetComponent<Animator>();
+            currentWeapon.Spawn(rightHandTransform, leftHandTransform, animator);
         }
 
         private void AttackBehaviour()
@@ -70,7 +85,13 @@ namespace RPG.Combat
         void Hit()
         {
             if (target == null) return;
-            target.TakeDamage(weaponDamage);
+            target.TakeDamage(currentWeapon.WeaponDamage);
+        }
+
+        // Annimation Event
+        void shoot()
+        {
+           if (target == null) return;
         }
        
         public bool CanAttack(GameObject combatTarget)

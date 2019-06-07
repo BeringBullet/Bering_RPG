@@ -17,6 +17,7 @@ MonoBehaviour:
   patrolPath: {fileID: 0}
   waypointTolerance: 1.1
   waypointDwellTime: 3
+  patralSpeedFraction: 0.2
 --- !u!1001 &1869317696393458878
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -74,6 +75,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30cf93deff988e74e88a144bd2127c18, type: 3}
+--- !u!4 &1869317696393667506 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 481036, guid: 30cf93deff988e74e88a144bd2127c18,
+    type: 3}
+  m_PrefabInstance: {fileID: 1869317696393458878}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1869317696393593776 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 423694, guid: 30cf93deff988e74e88a144bd2127c18,
+    type: 3}
+  m_PrefabInstance: {fileID: 1869317696393458878}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8338883974710537053
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -156,6 +169,33 @@ PrefabInstance:
       propertyPath: timeBetweenAttachs
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3688969473518523313, guid: 1c4968159f882804ab8f676e38bf6527,
+        type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 66e0e1867993d734e8f0e3d136f44030,
+        type: 2}
+    - target: {fileID: 3688969473518523313, guid: 1c4968159f882804ab8f676e38bf6527,
+        type: 3}
+      propertyPath: handTransform
+      value: 
+      objectReference: {fileID: 1869317696393593776}
+    - target: {fileID: 3688969473518523313, guid: 1c4968159f882804ab8f676e38bf6527,
+        type: 3}
+      propertyPath: defaultWeapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 66e0e1867993d734e8f0e3d136f44030,
+        type: 2}
+    - target: {fileID: 3688969473518523313, guid: 1c4968159f882804ab8f676e38bf6527,
+        type: 3}
+      propertyPath: leftHandTransform
+      value: 
+      objectReference: {fileID: 1869317696393667506}
+    - target: {fileID: 3688969473518523313, guid: 1c4968159f882804ab8f676e38bf6527,
+        type: 3}
+      propertyPath: rightHandTransform
+      value: 
+      objectReference: {fileID: 1869317696393593776}
     - target: {fileID: 1817110351886193561, guid: 1c4968159f882804ab8f676e38bf6527,
         type: 3}
       propertyPath: m_Speed
