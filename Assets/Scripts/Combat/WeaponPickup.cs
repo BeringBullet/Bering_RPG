@@ -7,14 +7,15 @@ namespace RPG.Combat
     public class WeaponPickup : MonoBehaviour
     {
         [SerializeField] Weapon weapon = null;
-        private void OnTriggerEnter(Collider other)
+    
+        private void OnTriggerEnter(Collider other) 
         {
-            if (weapon == null) return;
-            if (other.tag == "Player")
+            if (other.gameObject.tag == "Player")
             {
                 other.GetComponent<Fighter>().EquipWeapon(weapon);
                 Destroy(gameObject);
             }
         }
+
     }
 }

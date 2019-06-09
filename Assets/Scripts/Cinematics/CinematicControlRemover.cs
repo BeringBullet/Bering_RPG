@@ -1,9 +1,7 @@
-﻿using RPG.Contral;
-using RPG.Core;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using RPG.Core;
+using RPG.Control;
 
 namespace RPG.Cinematics
 {
@@ -11,8 +9,7 @@ namespace RPG.Cinematics
     {
         GameObject player;
 
-        private void Start()
-        {
+        private void Start() {
             GetComponent<PlayableDirector>().played += DisableControl;
             GetComponent<PlayableDirector>().stopped += EnableControl;
             player = GameObject.FindWithTag("Player");

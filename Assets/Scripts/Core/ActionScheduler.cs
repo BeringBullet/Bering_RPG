@@ -1,5 +1,3 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace RPG.Core
@@ -8,11 +6,9 @@ namespace RPG.Core
     {
         IAction currentAction;
 
-        public void CancelCurrentAction() => StartAction(null);
         public void StartAction(IAction action)
         {
             if (currentAction == action) return;
-
             if (currentAction != null)
             {
                 currentAction.Cancel();
@@ -20,5 +16,9 @@ namespace RPG.Core
             currentAction = action;
         }
 
+        public void CancelCurrentAction()
+        {
+            StartAction(null);
+        }
     }
 }

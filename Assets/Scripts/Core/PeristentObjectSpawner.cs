@@ -5,23 +5,22 @@ namespace RPG.Core
 {
     public class PeristentObjectSpawner : MonoBehaviour
     {
-        [SerializeField] GameObject presistentObjectPrefab;
-        static bool hasSpawne = false;
+        [SerializeField] GameObject persistentObjectPrefab;
 
-        /// <summary>
-        /// Awake is called when the script instance is being loaded.
-        /// </summary>
-        void Awake()
-        {
-            if (hasSpawne) return;
-            SpawnPersistentObject();
-            hasSpawne = true;
+        static bool hasSpawned = false;
+
+        private void Awake() {
+            if (hasSpawned) return;
+
+            SpawnPersistentObjects();
+
+            hasSpawned = true;
         }
 
-        private void SpawnPersistentObject()
+        private void SpawnPersistentObjects()
         {
-            GameObject peristentObject = Instantiate(presistentObjectPrefab);
-            DontDestroyOnLoad(peristentObject);
+            GameObject persistentObject = Instantiate(persistentObjectPrefab);
+            DontDestroyOnLoad(persistentObject);
         }
     }
 }

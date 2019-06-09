@@ -4,65 +4,64 @@ using RPG.Core;
 using RPG.Movement;
 using UnityEngine;
 
-namespace RPG.Contral
+namespace RPG.Control
 {
     public class PlayerController : MonoBehaviour
     {
-        private Ray MouseRay => Camera.main.ScreenPointToRay(Input.mousePosition);
-        Mover mover;
         Health health;
-        Fighter fighter;
-        private void Start()
-        {
-            mover = GetComponent<Mover>();
+
+        private void Start() {
             health = GetComponent<Health>();
-            fighter = GetComponent<Fighter>();
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            if (health.IsDead) return;
-            if (InteractWithCombat) return;
-            if (InteractWithMovement) return;
+            if (health.IsDead()) return;
+
+            if (InteractWithCombat()) return;
+            if (InteractWithMovement()) return;
         }
 
-        private bool InteractWithCombat
+        private bool InteractWithCombat()
         {
-            get
+            RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
+            foreach (RaycastHit hit in hits)
             {
-                RaycastHit[] hits = Physics.RaycastAll(MouseRay);
-                foreach (RaycastHit hit in hits)
-                {
-                    CombatTarget combatTarget = hit.transform.GetComponent<CombatTarget>();
-                    if (combatTarget == null) continue;
-                    if (!fighter.CanAttack(combatTarget.gameObject)) continue;
+                CombatTarget target = hit.transform.GetComponent<CombatTarget>();
+                if (target == null) continue;
 
-                    if (Input.GetMouseButton(0))
-                    {
-                        fighter.Attack(combatTarget.gameObject);
-                    }
-                    return true;
+                if (!GetComponent<Fighter>().CanAttack(target.gameObject))
+                {
+                    continue;
                 }
-                return false;
+
+                if (Input.GetMouseButton(0))
+                {
+                    GetComponent<Fighter>().Attack(target.gameObject);
+                }
+                return true;
             }
+            return false;
         }
 
-        private bool InteractWithMovement
+        private bool InteractWithMovement()
         {
-            get
+            RaycastHit hit;
+            bool hasHit = Physics.Raycast(GetMouseRay(), out hit);
+            if (hasHit)
             {
-                RaycastHit hitinfo;
-                if (Physics.Raycast(MouseRay, out hitinfo))
+                if (Input.GetMouseButton(0))
                 {
-                    if (Input.GetMouseButton(0))
-                    {
-                        mover.StartMoveAction(hitinfo.point, 1f);
-                    }
-                    return true;
+                    GetComponent<Mover>().StartMoveAction(hit.point, 1f);
                 }
-                return false;
+                return true;
             }
+            return false;
+        }
+
+        private static Ray GetMouseRay()
+        {
+            return Camera.main.ScreenPointToRay(Input.mousePosition);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -11,16 +11,12 @@ namespace RPG.Saving
 {
     public class SavingSystem : MonoBehaviour
     {
-        private const string saveFileExtension = ".sav";
-        private const string lastSceneBuildIndexId = "lastSceneBuildIndex";
-
         public IEnumerator LoadLastScene(string saveFile)
         {
             Dictionary<string, object> state = LoadFile(saveFile);
-            if (state.ContainsKey(lastSceneBuildIndexId))
+            if (state.ContainsKey("lastSceneBuildIndex"))
             {
-                int buildIndex = (int)state[lastSceneBuildIndexId];
-
+                int buildIndex = (int)state["lastSceneBuildIndex"];
                 if (buildIndex != SceneManager.GetActiveScene().buildIndex)
                 {
                     yield return SceneManager.LoadSceneAsync(buildIndex);
@@ -28,12 +24,14 @@ namespace RPG.Saving
             }
             RestoreState(state);
         }
+
         public void Save(string saveFile)
         {
             Dictionary<string, object> state = LoadFile(saveFile);
             CaptureState(state);
             SaveFile(saveFile, state);
         }
+
         public void Load(string saveFile)
         {
             RestoreState(LoadFile(saveFile));
@@ -42,8 +40,10 @@ namespace RPG.Saving
         private Dictionary<string, object> LoadFile(string saveFile)
         {
             string path = GetPathFromSaveFile(saveFile);
-            if (!File.Exists(path)) return new Dictionary<string, object>();
-
+            if (!File.Exists(path))
+            {
+                return new Dictionary<string, object>();
+            }
             using (FileStream stream = File.Open(path, FileMode.Open))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
@@ -54,6 +54,7 @@ namespace RPG.Saving
         private void SaveFile(string saveFile, object state)
         {
             string path = GetPathFromSaveFile(saveFile);
+            print("Saving to " + path);
             using (FileStream stream = File.Open(path, FileMode.Create))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
@@ -68,7 +69,7 @@ namespace RPG.Saving
                 state[saveable.GetUniqueIdentifier()] = saveable.CaptureState();
             }
 
-            state[lastSceneBuildIndexId] = SceneManager.GetActiveScene().buildIndex;
+            state["lastSceneBuildIndex"] = SceneManager.GetActiveScene().buildIndex;
         }
 
         private void RestoreState(Dictionary<string, object> state)
@@ -85,7 +86,7 @@ namespace RPG.Saving
 
         private string GetPathFromSaveFile(string saveFile)
         {
-            return Path.Combine(Application.persistentDataPath, saveFile + saveFileExtension);
+            return Path.Combine(Application.persistentDataPath, saveFile + ".sav");
         }
     }
 }

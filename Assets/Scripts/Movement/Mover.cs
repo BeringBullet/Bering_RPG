@@ -15,15 +15,14 @@ namespace RPG.Movement
         NavMeshAgent navMeshAgent;
         Health health;
 
-        private void Start()
-        {
+        private void Start() {
             navMeshAgent = GetComponent<NavMeshAgent>();
             health = GetComponent<Health>();
         }
 
         void Update()
         {
-            navMeshAgent.enabled = !health.IsDead;
+            navMeshAgent.enabled = !health.IsDead();
 
             UpdateAnimator();
         }
@@ -43,7 +42,6 @@ namespace RPG.Movement
 
         public void Cancel()
         {
-            GetComponent<NavMeshAgent>().enabled = true;
             navMeshAgent.isStopped = true;
         }
 
