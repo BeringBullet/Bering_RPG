@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 1853887504775597176, guid: 14c54984443e79945b41ea3045c83edc,
         type: 3}
       propertyPath: m_Name
-      value: ArrowProjectile Blue
+      value: Arrow Projectile Blue
       objectReference: {fileID: 0}
     - target: {fileID: 6934960370579878028, guid: 14c54984443e79945b41ea3045c83edc,
         type: 3}
