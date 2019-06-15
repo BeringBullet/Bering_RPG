@@ -22,13 +22,13 @@ namespace RPG.Combat
 
             private void Update()
             {
-
-                GetComponent<Text>().text = "N/A";
-                if (fighter.GetTarget() == null) return;
-
+                if (fighter.GetTarget() == null)
+                {
+                    GetComponent<Text>().text = "N/A";
+                    return;
+                }
                 Health health = fighter.GetTarget();
-                GetComponent<Text>().text = $"{health.Percentage:0.0}%";
-
+                GetComponent<Text>().text = String.Format("{0:0}%", health.GetPercentage());
             }
         }
     }

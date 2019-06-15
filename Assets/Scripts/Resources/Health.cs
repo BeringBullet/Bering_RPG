@@ -8,13 +8,19 @@ namespace RPG.Resources
 {
     public class Health : MonoBehaviour, ISaveable
     {
-        [SerializeField] float healthPoints = 100f;
+        [Range(0, 100)]
+        [SerializeField] float regenerationPercentage = 70;
+        float healthPoints = -1f;
 
         bool isDead = false;
 
         private void Start()
         {
-            healthPoints = GetComponent<BaseStats>().GetHealth();
+            GetComponent<BaseStats>().OnLevelUp += Health_OnLevelUp;
+            if (healthPoints < 0)
+            {
+                healthPoints = healthPoints < 0 ? GetComponent<BaseStats>().GetStat(Stat.Health) : healthPoints;
+            }
         }
 
         public bool IsDead()
@@ -25,22 +31,17 @@ namespace RPG.Resources
         public void TakeDamage(GameObject instigator, float damage)
         {
             healthPoints = Mathf.Max(healthPoints - damage, 0);
-            if(healthPoints == 0)
+            if (healthPoints == 0)
             {
                 Die();
                 AwardExperience(instigator);
             }
         }
 
-        private void AwardExperience(GameObject instigator)
+        public float GetPercentage()
         {
-            Experience experience = instigator.GetComponent<Experience>();
-            if (experience == null) return;
-
-            experience.GainExperience(GetComponent<BaseStats>().GetExperienceReward());
+            return 100 * (healthPoints / GetComponent<BaseStats>().GetStat(Stat.Health));
         }
-
-        public float Percentage => 100 * (healthPoints / GetComponent<BaseStats>().GetHealth());
 
         private void Die()
         {
@@ -51,6 +52,27 @@ namespace RPG.Resources
             GetComponent<ActionScheduler>().CancelCurrentAction();
         }
 
+        private void AwardExperience(GameObject instigator)
+        {
+            Experience experience = instigator.GetComponent<Experience>();
+            if (experience == null) return;
+
+            experience.GainExperience(GetComponent<BaseStats>().GetStat(Stat.ExperienceReward));
+        }
+
+        private void Health_OnLevelUp()
+        {
+
+            print("HEalth: Level up");
+            print($"healthPoints = {healthPoints}");
+            print($"Max = {GetComponent<BaseStats>().GetStat(Stat.Health)} * {regenerationPercentage} / 100" );
+            float regenHealthPoints = GetComponent<BaseStats>().GetStat(Stat.Health) * (regenerationPercentage / 100);
+            healthPoints = Mathf.Max(healthPoints, regenHealthPoints);
+
+            print($"regenHealthPoints = {regenHealthPoints}");
+            print($"healthPoints = {healthPoints}");
+        }
+
         public object CaptureState()
         {
             return healthPoints;
@@ -58,8 +80,8 @@ namespace RPG.Resources
 
         public void RestoreState(object state)
         {
-            healthPoints = (float) state;
-            
+            healthPoints = (float)state;
+
             if (healthPoints <= 0)
             {
                 Die();

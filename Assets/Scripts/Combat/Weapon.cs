@@ -1,5 +1,5 @@
-﻿using RPG.Resources;
-using UnityEngine;
+﻿using UnityEngine;
+using RPG.Resources;
 
 namespace RPG.Combat
 {
@@ -13,7 +13,7 @@ namespace RPG.Combat
         [SerializeField] bool isRightHanded = true;
         [SerializeField] Projectile projectile = null;
 
-        private const string WEAPONNAME = "Weapon";
+        const string weaponName = "Weapon";
 
         public void Spawn(Transform rightHand, Transform leftHand, Animator animator)
         {
@@ -23,32 +23,33 @@ namespace RPG.Combat
             {
                 Transform handTransform = GetTransform(rightHand, leftHand);
                 GameObject weapon = Instantiate(equippedPrefab, handTransform);
-                weapon.name = WEAPONNAME;
+                weapon.name = weaponName;
             }
 
-
-            var overControler = animator.runtimeAnimatorController as AnimatorOverrideController;
+            var overrideController = animator.runtimeAnimatorController as AnimatorOverrideController;
             if (animatorOverride != null)
             {
-                animator.runtimeAnimatorController = animatorOverride;
+                animator.runtimeAnimatorController = animatorOverride; 
             }
-            else if (overControler != null)
+            else if (overrideController != null)
             {
-                animator.runtimeAnimatorController = overControler.runtimeAnimatorController;
+                animator.runtimeAnimatorController = overrideController.runtimeAnimatorController;
             }
         }
 
         private void DestroyOldWeapon(Transform rightHand, Transform leftHand)
         {
-            Transform oldWeapon = rightHand.Find(WEAPONNAME);
+            Transform oldWeapon = rightHand.Find(weaponName);
             if (oldWeapon == null)
-                oldWeapon = leftHand.Find(WEAPONNAME);
-
+            {
+                oldWeapon = leftHand.Find(weaponName);
+            }
             if (oldWeapon == null) return;
+
             oldWeapon.name = "DESTROYING";
             Destroy(oldWeapon.gameObject);
-
         }
+
         private Transform GetTransform(Transform rightHand, Transform leftHand)
         {
             Transform handTransform;
@@ -64,8 +65,8 @@ namespace RPG.Combat
 
         public void LaunchProjectile(Transform rightHand, Transform leftHand, Health target, GameObject instigator)
         {
-            Projectile _projectile = Instantiate(projectile, GetTransform(rightHand, leftHand).position, Quaternion.identity);
-            _projectile.SetTarget(target, instigator, weaponDamage);
+            Projectile projectileInstance = Instantiate(projectile, GetTransform(rightHand, leftHand).position, Quaternion.identity);
+            projectileInstance.SetTarget(target, instigator, weaponDamage);
         }
 
         public float GetDamage()

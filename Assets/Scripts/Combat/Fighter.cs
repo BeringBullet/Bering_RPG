@@ -1,7 +1,6 @@
 using UnityEngine;
 using RPG.Movement;
 using RPG.Core;
-using System;
 using RPG.Saving;
 using RPG.Resources;
 
@@ -54,7 +53,8 @@ namespace RPG.Combat
         public Health GetTarget()
         {
             return target;
-        }
+        } 
+
         private void AttackBehaviour()
         {
             transform.LookAt(target.transform);
@@ -76,7 +76,7 @@ namespace RPG.Combat
         void Hit()
         {
             if(target == null) { return; }
-
+            
             if (currentWeapon.HasProjectile())
             {
                 currentWeapon.LaunchProjectile(rightHandTransform, leftHandTransform, target, gameObject);
@@ -134,5 +134,5 @@ namespace RPG.Combat
             Weapon weapon = UnityEngine.Resources.Load<Weapon>(weaponName);
             EquipWeapon(weapon);
         }
-    } 
+    }
 }

@@ -1,28 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace RPG.Resources
 {
-    namespace Assets.Scripts.Resources
+    public class HealthDisplay : MonoBehaviour
     {
-        class HealthDisplay : MonoBehaviour
+        Health health;
+
+        private void Awake()
         {
-            Health health;
+            health = GameObject.FindWithTag("Player").GetComponent<Health>();
+        }
 
-            private void Awake()
-            {
-                health = GameObject.FindWithTag("Player").GetComponent<Health>();
-            }
-
-            private void Update()
-            {
-                GetComponent<Text>().text = $"{health.Percentage:0.0}%";
-            }
+        private void Update()
+        {
+            GetComponent<Text>().text = String.Format("{0:0}%", health.GetPercentage());
         }
     }
 }
