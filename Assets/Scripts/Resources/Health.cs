@@ -30,6 +30,7 @@ namespace RPG.Resources
 
         public void TakeDamage(GameObject instigator, float damage)
         {
+            print($"{gameObject.name} took damage: damage");
             healthPoints = Mathf.Max(healthPoints - damage, 0);
             if (healthPoints == 0)
             {
@@ -63,7 +64,7 @@ namespace RPG.Resources
         private void Health_OnLevelUp()
         {
 
-            print("HEalth: Level up");
+            print("Health: Level up");
             print($"healthPoints = {healthPoints}");
             print($"Max = {GetComponent<BaseStats>().GetStat(Stat.Health)} * {regenerationPercentage} / 100" );
             float regenHealthPoints = GetComponent<BaseStats>().GetStat(Stat.Health) * (regenerationPercentage / 100);
@@ -71,6 +72,15 @@ namespace RPG.Resources
 
             print($"regenHealthPoints = {regenHealthPoints}");
             print($"healthPoints = {healthPoints}");
+        }
+        public float GetHealthPoints()
+        {
+            return healthPoints;
+        }
+
+        public float GetMaxHealthPoints()
+        {
+            return GetComponent<BaseStats>().GetStat(Stat.Health);
         }
 
         public object CaptureState()
