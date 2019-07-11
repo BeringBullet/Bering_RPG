@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using GameDevTV.Utils;
 namespace RPG.Stats
 {
     public class BaseStats : MonoBehaviour
@@ -15,27 +15,47 @@ namespace RPG.Stats
 
 
         public event Action OnLevelUp;
-        int currentLevel = 0;
+        LazyValue<int> currentLevel;
+        Experience experience;
+
+        private void Awake() 
+        {    
+            experience = GetComponent<Experience>();
+            currentLevel = new LazyValue<int>(CalculateLevel);
+        }
+
         private void Start()
         {
-            currentLevel = CalculateLevel();
-            Experience experience = GetComponent<Experience>();
-            if (experience != null)
+            currentLevel.ForceInit();
+        }
+ 
+        private void OnEnable() {
+          if (experience != null)
             {
                 experience.OnExperienceGained += Experience_OnExperienceGained;
-            }
+            }   
         }
+
+        private void OnDisable() 
+        {
+           if (experience != null)
+            {
+                experience.OnExperienceGained -= Experience_OnExperienceGained;
+            }   
+        }
+
         private void Experience_OnExperienceGained()
         {
             int newLevel = CalculateLevel();
-            if (newLevel > currentLevel)
+            if (newLevel > currentLevel.value)
             {
                 print("Basestate: Level up");
-                currentLevel = newLevel;
+                currentLevel.value = newLevel;
                 OnLevelUp();
                 LevelUpEffect();
             }
         }
+        
         private void LevelUpEffect()
         {
             if (levelUpEffect == null) return;
@@ -49,7 +69,7 @@ namespace RPG.Stats
 
         public int GetLevel()
         {
-            return currentLevel;
+            return currentLevel.value;
         }
         private int CalculateLevel()
         {
