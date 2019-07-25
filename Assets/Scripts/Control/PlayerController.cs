@@ -10,13 +10,6 @@ namespace RPG.Control
     public class PlayerController : MonoBehaviour
     {
         Health health;
-        enum CursorType
-        {
-            none,
-            Movement,
-            Combat,
-            UI
-        }
 
         [System.Serializable]
         struct CursorMapping
@@ -46,7 +39,7 @@ namespace RPG.Control
 
         private bool InteractWithComponent()
         {
-            RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
+            RaycastHit[] hits = raycastAllSorted();
             foreach (RaycastHit hit in hits)
             {
                IReycastable[] reycastables = hit.transform.GetComponents<IReycastable>();
@@ -54,13 +47,26 @@ namespace RPG.Control
                 {
                     if (reycastable.HandleRaycast(this))
                     {
-                        SetCursor(CursorType.Combat);
+                        SetCursor(reycastable.GetCursorType());
                         return true;
                     }
                 }
             }
             return false;
         }
+
+        RaycastHit[]  raycastAllSorted()
+        {
+            RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
+            float[] distances = new float[hits.Length];
+            for (int i = 0; i < hits.Length; i++)
+            {
+                distances[i] = hits[i].distance;
+            }
+            Array.Sort(distances, hits);
+            return hits;
+        }
+
         private bool InteractWithUI()
         {
             if (EventSystem.current.IsPointerOverGameObject())

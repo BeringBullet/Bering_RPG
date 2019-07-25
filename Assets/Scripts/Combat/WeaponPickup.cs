@@ -49,6 +49,9 @@ namespace RPG.Combat
             }
         }
 
-
+        public CursorType GetCursorType()
+        {
+            return CursorType.Pickup;
+        }
     }
 }
