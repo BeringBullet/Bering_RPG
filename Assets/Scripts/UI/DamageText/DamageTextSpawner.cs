@@ -11,7 +11,8 @@ namespace RPG.UI.DamageText
        
         public void Spawn(float damageAmount)
         {
-           DamageText damageText = Instantiate<DamageText>(damageTextPrefab, transform);
+           DamageText instance = Instantiate<DamageText>(damageTextPrefab, transform);
+            instance.SetValue(damageAmount);
         }
 
     }
