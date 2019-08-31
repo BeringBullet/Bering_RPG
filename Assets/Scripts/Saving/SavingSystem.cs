@@ -14,14 +14,12 @@ namespace RPG.Saving
         public IEnumerator LoadLastScene(string saveFile)
         {
             Dictionary<string, object> state = LoadFile(saveFile);
+            int buildIndex = SceneManager.GetActiveScene().buildIndex;
             if (state.ContainsKey("lastSceneBuildIndex"))
             {
-                int buildIndex = (int)state["lastSceneBuildIndex"];
-                if (buildIndex != SceneManager.GetActiveScene().buildIndex)
-                {
-                    yield return SceneManager.LoadSceneAsync(buildIndex);
-                }
+                buildIndex = (int)state["lastSceneBuildIndex"];
             }
+            yield return SceneManager.LoadSceneAsync(buildIndex);
             RestoreState(state);
         }
 
@@ -37,6 +35,11 @@ namespace RPG.Saving
             RestoreState(LoadFile(saveFile));
         }
 
+        public void Delete(string saveFile)
+        {
+            File.Delete(GetPathFromSaveFile(saveFile));
+        }
+
         private Dictionary<string, object> LoadFile(string saveFile)
         {
             string path = GetPathFromSaveFile(saveFile);
@@ -49,11 +52,6 @@ namespace RPG.Saving
                 BinaryFormatter formatter = new BinaryFormatter();
                 return (Dictionary<string, object>)formatter.Deserialize(stream);
             }
-        }
-
-        public void Delete(string saveFile)
-        {
-            File.Delete(GetPathFromSaveFile(saveFile));
         }
 
         private void SaveFile(string saveFile, object state)

@@ -2,7 +2,7 @@
 using RPG.Saving;
 using UnityEngine;
 using UnityEngine.AI;
-using RPG.Resources;
+using RPG.Attributes;
 
 namespace RPG.Movement
 {
@@ -60,9 +60,9 @@ namespace RPG.Movement
         public void RestoreState(object state)
         {
             SerializableVector3 position = (SerializableVector3)state;
-            GetComponent<NavMeshAgent>().enabled = false;
+            navMeshAgent.enabled = false;
             transform.position = position.ToVector();
-            GetComponent<NavMeshAgent>().enabled = true;
+            navMeshAgent.enabled = true;
             GetComponent<ActionScheduler>().CancelCurrentAction();
         }
     }

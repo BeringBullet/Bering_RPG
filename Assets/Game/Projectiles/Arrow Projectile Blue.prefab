@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &5154688666423354288
+--- !u!1001 &2255948742063085702
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -12,6 +12,27 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arrow Projectile Blue
       objectReference: {fileID: 0}
+    - target: {fileID: 4363093564197430368, guid: 14c54984443e79945b41ea3045c83edc,
+        type: 3}
+      propertyPath: speed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4363093564197430368, guid: 14c54984443e79945b41ea3045c83edc,
+        type: 3}
+      propertyPath: isHoming
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4363093564197430368, guid: 14c54984443e79945b41ea3045c83edc,
+        type: 3}
+      propertyPath: hitEffect
+      value: 
+      objectReference: {fileID: 7052069669789351578, guid: aead7987579702545ade89f549b33e0f,
+        type: 3}
+    - target: {fileID: 4363093564197430368, guid: 14c54984443e79945b41ea3045c83edc,
+        type: 3}
+      propertyPath: destroyOnHit.Array.data[0]
+      value: 
+      objectReference: {fileID: 3858231898281691972}
     - target: {fileID: 6934960370579878028, guid: 14c54984443e79945b41ea3045c83edc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -67,30 +88,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5783661666770942899, guid: 14c54984443e79945b41ea3045c83edc,
+    - target: {fileID: 4680965653521044430, guid: 14c54984443e79945b41ea3045c83edc,
         type: 3}
       propertyPath: m_Parameters.colorGradient.key0.r
-      value: 0
+      value: 0.07075471
       objectReference: {fileID: 0}
-    - target: {fileID: 5783661666770942899, guid: 14c54984443e79945b41ea3045c83edc,
+    - target: {fileID: 4680965653521044430, guid: 14c54984443e79945b41ea3045c83edc,
         type: 3}
       propertyPath: m_Parameters.colorGradient.key0.g
-      value: 0.7901604
+      value: 0.6845547
       objectReference: {fileID: 0}
-    - target: {fileID: 5783661666770942899, guid: 14c54984443e79945b41ea3045c83edc,
+    - target: {fileID: 4680965653521044430, guid: 14c54984443e79945b41ea3045c83edc,
         type: 3}
       propertyPath: m_Parameters.colorGradient.key0.b
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5783661666770942899, guid: 14c54984443e79945b41ea3045c83edc,
+    - target: {fileID: 4680965653521044430, guid: 14c54984443e79945b41ea3045c83edc,
         type: 3}
       propertyPath: m_Parameters.colorGradient.ctime0
-      value: 15227
+      value: 18504
       objectReference: {fileID: 0}
-    - target: {fileID: 5783661666770942899, guid: 14c54984443e79945b41ea3045c83edc,
+    - target: {fileID: 4680965653521044430, guid: 14c54984443e79945b41ea3045c83edc,
         type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.a
-      value: 0.5176471
+      propertyPath: m_Parameters.colorGradient.key1.a
+      value: 0.65882355
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14c54984443e79945b41ea3045c83edc, type: 3}
+--- !u!1 &3858231898281691972 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3082023544310305730, guid: 14c54984443e79945b41ea3045c83edc,
+    type: 3}
+  m_PrefabInstance: {fileID: 2255948742063085702}
+  m_PrefabAsset: {fileID: 0}
